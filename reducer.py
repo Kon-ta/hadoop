@@ -1,16 +1,12 @@
+from collections import defaultdict
+from operator import itemgetter
 import sys
 
-(last_key, count) = (None, 0)
+wordcount_dict = defaultdict(lambda:0)
 
 for line in sys.stdin:
-        (key, val) = line.strip().split(":")
+    word, count = line.strip().split('=')
+    wordcount_dict[word] += int(count)
 
-        if last_key and last_key != key:
-                print "%s\t%s" % (last_key, count)
-                (last_key, count) = (key,int(val))
-        else:
-                last_key = key
-                count += int(val)
-
-if last_key:
-        print "%s\t%s" % (last_key, count)
+for word, count in sorted(wordcount_dict.items(), key=lambda x:x[1]):
+    print '{0}\t{1}'.format(word, count)
